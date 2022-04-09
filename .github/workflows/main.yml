@@ -1,0 +1,38 @@
+name: Blob Storage Website CI
+
+on:
+  push:
+    branches: [ main ]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v2
+    - uses: azure/login@v1
+      with:
+          creds: ${{ secrets.AZURE_CREDENTIALS }}
+
+    - name: Upload to blob storage
+      uses: azure/CLI@v1
+      with:
+        inlineScript: |
+            az storage blob upload-batch --overwrite true --account-name cloudresume2022storage  --auth-mode key -d '$web' -s  .
+    - name: Purge CDN endpoint
+      uses: azure/CLI@v1
+      with:
+        inlineScript: |
+           az cdn endpoint purge --content-paths  "/*" --profile-name cloudresume2022CDN --name cloudresume2022 --resource-group cloudresume2022
+    - name: logout
+      run: |
+            az logout
+      if: always()
+      # Runs a single command using the runners shell
+      #- name: Run a one-line script
+       # run: echo Hello, world!
+
+      # Runs a set of commands using the runners shell
+      #- name: Run a multi-line script
+       # run: |
+        #  echo Add other actions to build,
+         # echo test, and deploy your project.

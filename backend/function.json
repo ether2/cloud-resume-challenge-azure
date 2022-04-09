@@ -1,0 +1,35 @@
+{
+    "bindings": [
+      {
+        "name": "req",
+        "authLevel": "anonymous",
+        "methods": [
+          "get",
+          "post"
+        ],
+        "direction": "in",
+        "type": "httpTrigger"
+      },
+      {
+        "type": "http",
+        "direction": "out",
+        "name": "res"
+      },
+      {
+        "name": "inputDocument",
+        "databaseName": "visits",
+        "collectionName": "tutorial-container",
+        "connectionStringSetting": "resume2022db_DOCUMENTDB",
+        "direction": "in",
+        "type": "cosmosDB"
+      },
+      {
+        "name": "outputDocument",
+        "direction": "out",
+        "type": "cosmosDB",
+        "connectionStringSetting": "resume2022db_DOCUMENTDB",
+        "databaseName": "visits",
+        "collectionName": "tutorial-container"
+      }
+    ]
+  }
